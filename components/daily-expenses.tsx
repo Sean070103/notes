@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { ExpenseItem } from './expense-item'
 import { useExpenses, type Expense } from '@/lib/expenses-context'
+import { formatDateKey } from '@/lib/utils'
 
 interface DailyExpensesProps {
   selectedDate: Date
@@ -20,7 +21,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
   const [showNewCategory, setShowNewCategory] = useState(false)
   const [submitting, setSubmitting] = useState(false)
 
-  const dateKey = selectedDate.toISOString().split('T')[0]
+  const dateKey = formatDateKey(selectedDate)
   const dayExpenses = allExpenses[dateKey] || []
 
   const handleAddExpense = async () => {

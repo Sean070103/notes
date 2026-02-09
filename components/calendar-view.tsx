@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useExpenses } from '@/lib/expenses-context'
+import { formatDateKey } from '@/lib/utils'
 
 export function CalendarView() {
   const { allExpenses: expenses } = useExpenses()
@@ -16,7 +17,7 @@ export function CalendarView() {
   }
 
   const getDailyTotal = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0]
+    const dateStr = formatDateKey(date)
     const dayExpenses = expenses[dateStr] || []
     return dayExpenses.reduce((sum, exp) => sum + exp.amount, 0)
   }

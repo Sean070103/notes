@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '@/lib/auth-context'
 import { createClient } from '@/lib/supabase'
+import { parseDateKey } from '@/lib/utils'
 
 export interface Expense {
   id: string
@@ -37,7 +38,7 @@ function groupExpensesByDate(rows: { id: string; date: string; amount: number; c
       amount: Number(row.amount),
       category: row.category,
       description: row.description ?? '',
-      timestamp: new Date(dateKey),
+      timestamp: parseDateKey(dateKey),
     })
   }
   return grouped
@@ -145,7 +146,7 @@ export function ExpensesProvider({ children }: { children: React.ReactNode }) {
               amount: Number(row.amount),
               category: row.category,
               description: row.description ?? '',
-              timestamp: new Date(dateKey),
+              timestamp: parseDateKey(dateKey),
             },
           ],
         }

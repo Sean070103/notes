@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useExpenses } from '@/lib/expenses-context'
+import { formatDateKey, parseDateKey } from '@/lib/utils'
 
 export function StatsView() {
   const { allExpenses: expenses } = useExpenses()
@@ -31,7 +32,7 @@ export function StatsView() {
       for (let i = 0; i < 7; i++) {
         const checkDate = new Date(currentWeekStart)
         checkDate.setDate(checkDate.getDate() + i)
-        const dateStr = checkDate.toISOString().split('T')[0]
+        const dateStr = formatDateKey(checkDate)
         const dayExpenses = expenses[dateStr] || []
         weekTotal += dayExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       }
@@ -54,7 +55,7 @@ export function StatsView() {
     let total = 0
     
     for (const [dateStr, dayExpenses] of Object.entries(expenses)) {
-      const expenseDate = new Date(dateStr)
+      const expenseDate = parseDateKey(dateStr)
       if (expenseDate.getFullYear() === year && expenseDate.getMonth() === month) {
         total += dayExpenses.reduce((sum, exp) => sum + exp.amount, 0)
       }
@@ -69,7 +70,7 @@ export function StatsView() {
     const categories: { [key: string]: number } = {}
     
     for (const [dateStr, dayExpenses] of Object.entries(expenses)) {
-      const expenseDate = new Date(dateStr)
+      const expenseDate = parseDateKey(dateStr)
       if (expenseDate.getFullYear() === year && expenseDate.getMonth() === month) {
         dayExpenses.forEach((exp) => {
           categories[exp.category] = (categories[exp.category] || 0) + exp.amount
