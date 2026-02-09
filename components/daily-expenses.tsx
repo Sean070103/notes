@@ -65,47 +65,47 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Input Section */}
-      <Card className="bg-card p-6 border border-border rounded-lg">
-        <h2 className="text-lg font-bold text-primary mb-6">Add Expense</h2>
+    <div className="space-y-4 sm:space-y-6">
+      <Card className="bg-card p-4 xs:p-5 sm:p-6 border border-border rounded-lg">
+        <h2 className="text-base xs:text-lg font-bold text-primary mb-4 sm:mb-6">Add Expense</h2>
 
         <div className="space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-bold text-foreground mb-2">Amount</label>
+              <label className="block text-xs xs:text-sm font-bold text-foreground mb-1.5 xs:mb-2">Amount</label>
               <Input
                 type="number"
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm placeholder:text-muted-foreground"
+                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground"
                 step="0.01"
               />
             </div>
             <div>
-              <label className="block text-sm font-bold text-foreground mb-2">Description</label>
+              <label className="block text-xs xs:text-sm font-bold text-foreground mb-1.5 xs:mb-2">Description</label>
               <Input
                 type="text"
                 placeholder="Coffee, Gas..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm placeholder:text-muted-foreground"
+                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-foreground mb-3">Category</label>
-            <div className="flex flex-wrap gap-2">
+            <label className="block text-xs xs:text-sm font-bold text-foreground mb-2 xs:mb-3">Category</label>
+            <div className="flex gap-2 overflow-x-auto pb-1 -mx-0.5 md:flex-wrap md:overflow-visible">
               {categories.map((cat) => (
                 <button
                   key={cat}
+                  type="button"
                   onClick={() => {
                     setSelectedCategory(cat)
                     setShowNewCategory(false)
                   }}
-                  className={`px-4 py-2 rounded-lg font-bold text-sm transition ${
+                  className={`min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-lg font-bold text-xs xs:text-sm transition ${
                     selectedCategory === cat
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
@@ -115,8 +115,9 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                 </button>
               ))}
               <button
+                type="button"
                 onClick={() => setShowNewCategory(!showNewCategory)}
-                className="px-4 py-2 rounded-lg font-bold text-sm bg-secondary/20 text-secondary hover:bg-secondary/30 transition border border-secondary/30"
+                className="min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-lg font-bold text-xs xs:text-sm bg-secondary/20 text-secondary hover:bg-secondary/30 transition border border-secondary/30"
               >
                 +New
               </button>
@@ -124,18 +125,18 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
           </div>
 
           {showNewCategory && (
-            <div className="flex gap-2">
+            <div className="flex flex-col xs:flex-row gap-2">
               <Input
                 type="text"
                 placeholder="New category..."
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm placeholder:text-muted-foreground flex-1"
+                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground flex-1"
                 onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
               />
               <Button
                 onClick={handleAddCategory}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-4"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold min-h-[44px] px-4"
               >
                 Add
               </Button>
@@ -145,23 +146,23 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
           <Button
             onClick={handleAddExpense}
             disabled={!amount || submitting}
-            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 font-bold disabled:opacity-50 rounded-lg"
+            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 font-bold disabled:opacity-50 rounded-lg min-h-[44px] text-sm"
           >
             {submitting ? 'Adding...' : 'Add Expense'}
           </Button>
         </div>
       </Card>
 
-      <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-lg p-6 border border-primary/30">
-        <p className="text-sm font-bold text-muted-foreground mb-2">Today's Total</p>
-        <p className="text-4xl font-bold text-primary">₱{totalExpenses.toFixed(2)}</p>
+      <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-lg p-4 xs:p-5 sm:p-6 border border-primary/30">
+        <p className="text-xs xs:text-sm font-bold text-muted-foreground mb-1 xs:mb-2">Today's Total</p>
+        <p className="text-2xl xs:text-3xl sm:text-4xl font-bold text-primary">₱{totalExpenses.toFixed(2)}</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {dayExpenses.length === 0 ? (
-          <div className="bg-muted/50 rounded-lg p-8 text-center border border-border">
-            <p className="text-sm font-bold text-muted-foreground">No expenses yet</p>
-            <p className="text-xs text-muted-foreground mt-2">Start tracking your spending!</p>
+          <div className="bg-muted/50 rounded-lg p-6 xs:p-8 text-center border border-border">
+            <p className="text-xs xs:text-sm font-bold text-muted-foreground">No expenses yet</p>
+            <p className="text-[10px] xs:text-xs text-muted-foreground mt-2">Start tracking your spending!</p>
           </div>
         ) : (
           dayExpenses.map((expense: Expense) => (

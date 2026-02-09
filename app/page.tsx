@@ -9,6 +9,7 @@ import { Header } from '@/components/header'
 import { DateSelector } from '@/components/date-selector'
 import { CalendarView } from '@/components/calendar-view'
 import { StatsView } from '@/components/stats-view'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export default function Page() {
   const router = useRouter()
@@ -34,56 +35,36 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-6 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-background px-3 py-4 xs:px-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
       <ExpensesProvider>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto w-full min-w-0">
         <Header />
-        
-        {/* Navigation Tabs */}
-        <div className="mt-8 flex gap-2 justify-center flex-wrap">
-          <button
-            onClick={() => setActiveTab('daily')}
-            className={`px-6 py-2 rounded-lg font-bold text-sm transition ${
-              activeTab === 'daily'
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }`}
-          >
-            DAILY
-          </button>
-          <button
-            onClick={() => setActiveTab('calendar')}
-            className={`px-6 py-2 rounded-lg font-bold text-sm transition ${
-              activeTab === 'calendar'
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }`}
-          >
-            CALENDAR
-          </button>
-          <button
-            onClick={() => setActiveTab('stats')}
-            className={`px-6 py-2 rounded-lg font-bold text-sm transition ${
-              activeTab === 'stats'
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }`}
-          >
-            STATS
-          </button>
-        </div>
 
-        {/* Content Area */}
-        <div className="mt-8">
-          {activeTab === 'daily' && (
-            <div className="space-y-6">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'daily' | 'calendar' | 'stats')} className="mt-4 sm:mt-6 md:mt-8">
+          <TabsList className="w-full grid grid-cols-3 h-auto p-1 sm:w-auto sm:inline-flex sm:h-10">
+            <TabsTrigger value="daily" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+              DAILY
+            </TabsTrigger>
+            <TabsTrigger value="calendar" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+              CALENDAR
+            </TabsTrigger>
+            <TabsTrigger value="stats" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+              STATS
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="daily" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
+            <div className="space-y-4 sm:space-y-6">
               <DateSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
               <DailyExpenses selectedDate={selectedDate} />
             </div>
-          )}
-          {activeTab === 'calendar' && <CalendarView />}
-          {activeTab === 'stats' && <StatsView />}
-        </div>
+          </TabsContent>
+          <TabsContent value="calendar" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
+            <CalendarView />
+          </TabsContent>
+          <TabsContent value="stats" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
+            <StatsView />
+          </TabsContent>
+        </Tabs>
       </div>
       </ExpensesProvider>
     </main>

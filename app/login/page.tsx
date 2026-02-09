@@ -68,31 +68,31 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-background px-4 relative">
-      <div className="absolute top-4 right-4">
+    <main className="min-h-screen min-h-[100dvh] flex flex-col items-center justify-center bg-background px-3 xs:px-4 py-6 sm:py-8 relative">
+      <div className="absolute top-3 right-3 xs:top-4 xs:right-4">
         <ThemeSwitcher />
       </div>
-      <Card className="w-full max-w-md pixel-border border-4 border-foreground/20 bg-card">
-        <CardHeader className="text-center space-y-1">
-          <CardTitle className="text-lg sm:text-xl">EXPENSE TRACKER</CardTitle>
-          <CardDescription className="text-xs">
+      <Card className="w-full max-w-md pixel-border border-2 xs:border-4 border-foreground/20 bg-card mx-2">
+        <CardHeader className="text-center space-y-1 p-4 xs:p-6">
+          <CardTitle className="text-base xs:text-lg sm:text-xl">EXPENSE TRACKER</CardTitle>
+          <CardDescription className="text-[10px] xs:text-xs">
             {isSignUp ? 'Create an account' : 'Sign in to continue'}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-4 xs:p-6 pt-0">
             {error && (
-              <div className="rounded-md bg-destructive/10 text-destructive text-xs p-3 border border-destructive/20">
+              <div className="rounded-md bg-destructive/10 text-destructive text-[10px] xs:text-xs p-2.5 xs:p-3 border border-destructive/20">
                 {error}
               </div>
             )}
             {success && (
-              <div className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-xs p-3 border border-green-500/20">
+              <div className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-[10px] xs:text-xs p-2.5 xs:p-3 border border-green-500/20">
                 {success}
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-xs">
+              <Label htmlFor="email" className="text-[10px] xs:text-xs">
                 EMAIL
               </Label>
               <Input
@@ -102,12 +102,12 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="text-sm"
+                className="text-sm min-h-[44px]"
                 autoComplete="email"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-xs">
+              <Label htmlFor="password" className="text-[10px] xs:text-xs">
                 PASSWORD
               </Label>
               <Input
@@ -117,15 +117,15 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="text-sm"
+                className="text-sm min-h-[44px]"
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col gap-3">
+          <CardFooter className="flex flex-col gap-3 p-4 xs:p-6 pt-0">
             <Button
               type="submit"
-              className="w-full pixel-border border-2 border-foreground/30 font-bold text-sm"
+              className="w-full pixel-border border-2 border-foreground/30 font-bold text-sm min-h-[44px]"
               disabled={submitting}
             >
               {submitting ? '...' : isSignUp ? 'SIGN UP' : 'SIGN IN'}
@@ -137,7 +137,7 @@ export default function LoginPage() {
                 setError(null)
                 setSuccess(null)
               }}
-              className="text-xs text-muted-foreground hover:text-foreground underline"
+              className="text-[10px] xs:text-xs text-muted-foreground hover:text-foreground underline py-2 min-h-[44px] flex items-center justify-center"
             >
               {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
             </button>

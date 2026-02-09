@@ -26,8 +26,8 @@ export function ThemeSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2 text-xs font-bold">
-          <Palette className="h-3.5 w-3.5" />
+        <Button variant="outline" size="sm" className="gap-1.5 xs:gap-2 text-[10px] xs:text-xs font-bold min-h-[44px] xs:min-h-9 px-2 xs:px-3">
+          <Palette className="h-3 w-3 xs:h-3.5 xs:w-3.5 shrink-0" />
           THEME
         </Button>
       </DropdownMenuTrigger>
