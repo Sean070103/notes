@@ -1,26 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-interface ExpenseData {
-  [date: string]: Array<{
-    id: string
-    description: string
-    amount: number
-    category: string
-  }>
-}
+import { useState } from 'react'
+import { useExpenses } from '@/lib/expenses-context'
 
 export function CalendarView() {
+  const { allExpenses: expenses } = useExpenses()
   const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [expenses, setExpenses] = useState<ExpenseData>({})
-
-  useEffect(() => {
-    const stored = localStorage.getItem('expenses')
-    if (stored) {
-      setExpenses(JSON.parse(stored))
-    }
-  }, [])
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()

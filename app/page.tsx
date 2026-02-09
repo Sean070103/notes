@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
+import { ExpensesProvider } from '@/lib/expenses-context'
 import { DailyExpenses } from '@/components/daily-expenses'
 import { Header } from '@/components/header'
 import { DateSelector } from '@/components/date-selector'
@@ -34,6 +35,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-background px-4 py-6 sm:px-6 lg:px-8">
+      <ExpensesProvider>
       <div className="max-w-4xl mx-auto">
         <Header />
         
@@ -83,6 +85,7 @@ export default function Page() {
           {activeTab === 'stats' && <StatsView />}
         </div>
       </div>
+      </ExpensesProvider>
     </main>
   )
 }

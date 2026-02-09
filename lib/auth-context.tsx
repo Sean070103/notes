@@ -20,6 +20,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = useMemo(() => createClient(), [])
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -33,20 +37,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
 
     return () => subscription.unsubscribe()
-  }, [supabase.auth])
+  }, [supabase])
 
   const signIn = async (email: string, password: string) => {
+    if (!supabase) return { error: new Error('Supabase is not configured') }
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     return { error: error ? new Error(error.message) : null }
   }
 
   const signUp = async (email: string, password: string) => {
+    if (!supabase) return { error: new Error('Supabase is not configured') }
     const { error } = await supabase.auth.signUp({ email, password })
     return { error: error ? new Error(error.message) : null }
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    if (supabase) await supabase.auth.signOut()
   }
 
   return (

@@ -1,93 +1,67 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { ExpenseItem } from './expense-item'
-
-interface Expense {
-  id: string
-  amount: number
-  category: string
-  description: string
-  timestamp: Date
-}
+import { useExpenses, type Expense } from '@/lib/expenses-context'
 
 interface DailyExpensesProps {
   selectedDate: Date
 }
 
-interface StorageExpenses {
-  [date: string]: Expense[]
-}
-
 export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
-  const [allExpenses, setAllExpenses] = useState<StorageExpenses>({})
-  const [categories, setCategories] = useState<string[]>(['Food', 'Transport', 'Shopping', 'Entertainment'])
+  const { allExpenses, categories, loading, addExpense, deleteExpense, addCategory } = useExpenses()
   const [amount, setAmount] = useState('')
   const [description, setDescription] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('Food')
+  const [selectedCategory, setSelectedCategory] = useState(categories[0] ?? 'Food')
   const [newCategory, setNewCategory] = useState('')
   const [showNewCategory, setShowNewCategory] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('expenses')
-    if (stored) {
-      setAllExpenses(JSON.parse(stored))
-    }
-    const storedCats = localStorage.getItem('expense-categories')
-    if (storedCats) {
-      setCategories(JSON.parse(storedCats))
-      setSelectedCategory(JSON.parse(storedCats)[0])
-    }
-    setMounted(true)
-  }, [])
+  const [submitting, setSubmitting] = useState(false)
 
   const dateKey = selectedDate.toISOString().split('T')[0]
   const dayExpenses = allExpenses[dateKey] || []
 
-  const addExpense = () => {
-    if (!amount || isNaN(parseFloat(amount)) || !mounted) return
-
-    const newExpense: Expense = {
-      id: Date.now().toString(),
+  const handleAddExpense = async () => {
+    if (!amount || isNaN(parseFloat(amount))) return
+    setSubmitting(true)
+    await addExpense(dateKey, {
       amount: parseFloat(amount),
       category: selectedCategory,
       description,
-      timestamp: selectedDate
-    }
-
-    const updated = { ...allExpenses, [dateKey]: [...dayExpenses, newExpense] }
-    localStorage.setItem('expenses', JSON.stringify(updated))
-    setAllExpenses(updated)
+      timestamp: selectedDate,
+    })
     setAmount('')
     setDescription('')
-    setSelectedCategory(categories[0])
+    setSelectedCategory(categories[0] ?? 'Food')
+    setSubmitting(false)
   }
 
-  const addCategory = () => {
-    if (newCategory.trim() && !categories.includes(newCategory)) {
-      const updated = [...categories, newCategory]
-      setCategories(updated)
-      localStorage.setItem('expense-categories', JSON.stringify(updated))
+  const handleAddCategory = async () => {
+    if (newCategory.trim() && !categories.includes(newCategory.trim())) {
+      await addCategory(newCategory.trim())
+      setSelectedCategory(newCategory.trim())
       setNewCategory('')
       setShowNewCategory(false)
-      setSelectedCategory(newCategory)
     }
   }
 
-  const deleteExpense = (id: string) => {
-    const updated = dayExpenses.filter((e: Expense) => e.id !== id)
-    const newAllExpenses = { ...allExpenses, [dateKey]: updated }
-    localStorage.setItem('expenses', JSON.stringify(newAllExpenses))
-    setAllExpenses(newAllExpenses)
+  const handleDeleteExpense = async (id: string) => {
+    await deleteExpense(dateKey, id)
   }
 
-  if (!mounted) return null
-
   const totalExpenses = dayExpenses.reduce((sum: number, e: Expense) => sum + e.amount, 0)
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Card className="bg-card p-6 border border-border rounded-lg">
+          <p className="text-sm font-bold text-muted-foreground">Loading expenses...</p>
+        </Card>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -96,7 +70,6 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
         <h2 className="text-lg font-bold text-primary mb-6">Add Expense</h2>
 
         <div className="space-y-4">
-          {/* Amount and Description */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className="block text-sm font-bold text-foreground mb-2">Amount</label>
@@ -121,7 +94,6 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
             </div>
           </div>
 
-          {/* Category Selection */}
           <div>
             <label className="block text-sm font-bold text-foreground mb-3">Category</label>
             <div className="flex flex-wrap gap-2">
@@ -150,7 +122,6 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
             </div>
           </div>
 
-          {/* New Category Input */}
           {showNewCategory && (
             <div className="flex gap-2">
               <Input
@@ -159,10 +130,10 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
                 className="bg-input text-foreground border-2 border-border rounded-lg text-sm placeholder:text-muted-foreground flex-1"
-                onKeyPress={(e) => e.key === 'Enter' && addCategory()}
+                onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
               />
               <Button
-                onClick={addCategory}
+                onClick={handleAddCategory}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold px-4"
               >
                 Add
@@ -170,24 +141,21 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
             </div>
           )}
 
-          {/* Add Button */}
           <Button
-            onClick={addExpense}
-            disabled={!amount}
+            onClick={handleAddExpense}
+            disabled={!amount || submitting}
             className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 font-bold disabled:opacity-50 rounded-lg"
           >
-            Add Expense
+            {submitting ? 'Adding...' : 'Add Expense'}
           </Button>
         </div>
       </Card>
 
-      {/* Total */}
       <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-lg p-6 border border-primary/30">
         <p className="text-sm font-bold text-muted-foreground mb-2">Today's Total</p>
         <p className="text-4xl font-bold text-primary">₱{totalExpenses.toFixed(2)}</p>
       </div>
 
-      {/* Expenses List */}
       <div className="space-y-3">
         {dayExpenses.length === 0 ? (
           <div className="bg-muted/50 rounded-lg p-8 text-center border border-border">
@@ -196,7 +164,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
           </div>
         ) : (
           dayExpenses.map((expense: Expense) => (
-            <ExpenseItem key={expense.id} expense={expense} onDelete={deleteExpense} />
+            <ExpenseItem key={expense.id} expense={expense} onDelete={handleDeleteExpense} />
           ))
         )}
       </div>

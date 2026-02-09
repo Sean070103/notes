@@ -1,26 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-interface ExpenseData {
-  [date: string]: Array<{
-    id: string
-    description: string
-    amount: number
-    category: string
-  }>
-}
+import { useState } from 'react'
+import { useExpenses } from '@/lib/expenses-context'
 
 export function StatsView() {
-  const [expenses, setExpenses] = useState<ExpenseData>({})
+  const { allExpenses: expenses } = useExpenses()
   const [currentMonth, setCurrentMonth] = useState(new Date())
-
-  useEffect(() => {
-    const stored = localStorage.getItem('expenses')
-    if (stored) {
-      setExpenses(JSON.parse(stored))
-    }
-  }, [])
 
   const getWeekStart = (date: Date) => {
     const d = new Date(date)
