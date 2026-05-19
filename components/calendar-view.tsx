@@ -37,12 +37,12 @@ export function CalendarView() {
   }
 
   return (
-    <div className="bg-card rounded-lg p-3 xs:p-4 sm:p-6 border border-border overflow-hidden">
+    <div className="neo-card p-3 xs:p-4 sm:p-6 overflow-hidden">
       <div className="flex items-center justify-between gap-2 mb-4 xs:mb-6">
         <button
           type="button"
           onClick={prevMonth}
-          className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-xs xs:text-sm hover:opacity-90 shrink-0"
+          className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-md font-bold text-xs xs:text-sm neo-border neo-shadow-sm neo-btn-press shrink-0"
         >
           ← PREV
         </button>
@@ -50,7 +50,7 @@ export function CalendarView() {
         <button
           type="button"
           onClick={nextMonth}
-          className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-xs xs:text-sm hover:opacity-90 shrink-0"
+          className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-md font-bold text-xs xs:text-sm neo-border neo-shadow-sm neo-btn-press shrink-0"
         >
           NEXT →
         </button>
@@ -76,10 +76,10 @@ export function CalendarView() {
           return (
             <div
               key={day}
-              className={`aspect-square min-w-0 rounded-md xs:rounded-lg p-0.5 xs:p-1 sm:p-2 flex flex-col items-center justify-center border-2 transition ${
+              className={`aspect-square min-w-0 rounded-md p-0.5 xs:p-1 sm:p-2 flex flex-col items-center justify-center neo-border transition ${
                 hasExpenses
-                  ? 'bg-primary/20 border-primary'
-                  : 'bg-muted border-muted'
+                  ? 'bg-primary text-primary-foreground neo-shadow-sm'
+                  : 'bg-card neo-shadow-sm'
               }`}
             >
               <div className="text-[10px] xs:text-xs sm:text-sm font-bold text-foreground leading-tight">{day}</div>

@@ -42,7 +42,7 @@ export function DateSelector({ selectedDate, onDateChange }: DateSelectorProps) 
   const monthLabel = selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
 
   return (
-    <Card className="bg-card p-3 xs:p-4 border border-border rounded-lg">
+    <Card className="p-3 xs:p-4">
       <div className="flex items-center justify-between gap-2 mb-3 xs:mb-4">
         <h3 className="text-xs xs:text-sm font-bold text-foreground">Select Date</h3>
         <span className="text-[10px] xs:text-xs font-bold text-muted-foreground" aria-live="polite">
@@ -54,10 +54,10 @@ export function DateSelector({ selectedDate, onDateChange }: DateSelectorProps) 
           <button
             type="button"
             onClick={() => onDateChange(yesterday)}
-            className={`min-h-[44px] px-4 py-2.5 text-xs xs:text-sm font-bold rounded-lg transition flex-1 xs:flex-none ${
+            className={`min-h-[44px] px-4 py-2.5 text-xs xs:text-sm font-bold rounded-md neo-border neo-shadow-sm neo-btn-press flex-1 xs:flex-none ${
               isSelected(yesterday)
-                ? 'bg-secondary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                ? 'bg-secondary text-secondary-foreground'
+                : 'bg-card text-foreground'
             }`}
           >
             Yesterday
@@ -65,10 +65,10 @@ export function DateSelector({ selectedDate, onDateChange }: DateSelectorProps) 
           <button
             type="button"
             onClick={() => onDateChange(today)}
-            className={`min-h-[44px] px-4 py-2.5 text-xs xs:text-sm font-bold rounded-lg transition flex-1 xs:flex-none ${
+            className={`min-h-[44px] px-4 py-2.5 text-xs xs:text-sm font-bold rounded-md neo-border neo-shadow-sm neo-btn-press flex-1 xs:flex-none ${
               isSelected(today)
                 ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                : 'bg-card text-foreground'
             }`}
           >
             Today
@@ -77,21 +77,21 @@ export function DateSelector({ selectedDate, onDateChange }: DateSelectorProps) 
             type="date"
             value={formatDateKey(selectedDate)}
             onChange={(e) => onDateChange(parseDateKey(e.target.value))}
-            className="bg-input text-foreground border-2 border-border rounded-lg text-xs xs:text-sm font-bold px-3 py-2.5 min-h-[44px] w-full xs:w-auto flex-1 xs:flex-none"
+            className="text-xs xs:text-sm font-bold min-h-[44px] w-full xs:w-auto flex-1 xs:flex-none"
           />
         </div>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={goPrevMonth}
-            className="min-h-[44px] flex-1 px-3 py-2.5 text-xs xs:text-sm font-bold rounded-lg bg-muted text-muted-foreground hover:bg-muted/80 transition"
+            className="min-h-[44px] flex-1 px-3 py-2.5 text-xs xs:text-sm font-bold rounded-md neo-border neo-shadow-sm bg-card text-foreground neo-btn-press"
           >
             ← Previous month
           </button>
           <button
             type="button"
             onClick={goNextMonth}
-            className="min-h-[44px] flex-1 px-3 py-2.5 text-xs xs:text-sm font-bold rounded-lg bg-muted text-muted-foreground hover:bg-muted/80 transition disabled:opacity-50 disabled:pointer-events-none"
+            className="min-h-[44px] flex-1 px-3 py-2.5 text-xs xs:text-sm font-bold rounded-md neo-border neo-shadow-sm bg-muted text-foreground neo-btn-press disabled:opacity-50 disabled:pointer-events-none"
             disabled={selectedDate.getMonth() === today.getMonth() && selectedDate.getFullYear() === today.getFullYear()}
           >
             Next month →

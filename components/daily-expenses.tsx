@@ -57,7 +57,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Card className="bg-card p-6 border border-border rounded-lg">
+        <Card className="p-6">
           <p className="text-sm font-bold text-muted-foreground">Loading expenses...</p>
         </Card>
       </div>
@@ -66,7 +66,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <Card className="bg-card p-4 xs:p-5 sm:p-6 border border-border rounded-lg">
+      <Card className="p-4 xs:p-5 sm:p-6">
         <h2 className="text-base xs:text-lg font-bold text-primary mb-4 sm:mb-6">Add Expense</h2>
 
         <div className="space-y-4">
@@ -78,7 +78,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                 placeholder="0.00"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground"
+                className="text-sm min-h-[44px]"
                 step="0.01"
               />
             </div>
@@ -89,7 +89,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                 placeholder="Coffee, Gas..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground"
+                className="text-sm min-h-[44px]"
               />
             </div>
           </div>
@@ -105,10 +105,10 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                     setSelectedCategory(cat)
                     setShowNewCategory(false)
                   }}
-                  className={`min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-lg font-bold text-xs xs:text-sm transition ${
+                  className={`min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-md font-bold text-xs xs:text-sm neo-border transition neo-btn-press ${
                     selectedCategory === cat
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      ? 'bg-primary text-primary-foreground neo-shadow-sm'
+                      : 'bg-card text-foreground neo-shadow-sm hover:translate-x-[1px] hover:translate-y-[1px]'
                   }`}
                 >
                   {cat}
@@ -117,7 +117,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
               <button
                 type="button"
                 onClick={() => setShowNewCategory(!showNewCategory)}
-                className="min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-lg font-bold text-xs xs:text-sm bg-secondary/20 text-secondary hover:bg-secondary/30 transition border border-secondary/30"
+                className="min-h-[44px] shrink-0 px-3 xs:px-4 py-2 rounded-md font-bold text-xs xs:text-sm bg-secondary text-secondary-foreground neo-border neo-shadow-sm neo-btn-press"
               >
                 +New
               </button>
@@ -131,7 +131,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
                 placeholder="New category..."
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
-                className="bg-input text-foreground border-2 border-border rounded-lg text-sm min-h-[44px] placeholder:text-muted-foreground flex-1"
+                className="text-sm min-h-[44px] flex-1"
                 onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
               />
               <Button
@@ -146,21 +146,21 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
           <Button
             onClick={handleAddExpense}
             disabled={!amount || submitting}
-            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90 font-bold disabled:opacity-50 rounded-lg min-h-[44px] text-sm"
+            className="w-full min-h-[44px] text-sm"
           >
             {submitting ? 'Adding...' : 'Add Expense'}
           </Button>
         </div>
       </Card>
 
-      <div className="bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 rounded-lg p-4 xs:p-5 sm:p-6 border border-primary/30">
-        <p className="text-xs xs:text-sm font-bold text-muted-foreground mb-1 xs:mb-2">Today's Total</p>
-        <p className="text-2xl xs:text-3xl sm:text-4xl font-bold text-primary">₱{totalExpenses.toFixed(2)}</p>
+      <div className="bg-secondary neo-border neo-shadow-lg rounded-md p-4 xs:p-5 sm:p-6">
+        <p className="text-xs xs:text-sm font-bold text-foreground mb-1 xs:mb-2 uppercase">Today&apos;s Total</p>
+        <p className="text-2xl xs:text-3xl sm:text-4xl font-bold text-foreground">₱{totalExpenses.toFixed(2)}</p>
       </div>
 
       <div className="space-y-2 sm:space-y-3">
         {dayExpenses.length === 0 ? (
-          <div className="bg-muted/50 rounded-lg p-6 xs:p-8 text-center border border-border">
+          <div className="bg-muted neo-border neo-shadow-sm rounded-md p-6 xs:p-8 text-center">
             <p className="text-xs xs:text-sm font-bold text-muted-foreground">No expenses yet</p>
             <p className="text-[10px] xs:text-xs text-muted-foreground mt-2">Start tracking your spending!</p>
           </div>

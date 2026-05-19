@@ -83,12 +83,12 @@ export function StatsView() {
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      <div className="bg-card rounded-lg p-4 xs:p-5 sm:p-6 border border-border">
+      <div className="neo-card p-4 xs:p-5 sm:p-6">
         <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
           <button
             type="button"
             onClick={prevMonth}
-            className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-xs xs:text-sm hover:opacity-90 shrink-0"
+            className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-md font-bold text-xs xs:text-sm neo-border neo-shadow-sm neo-btn-press shrink-0"
           >
             ← PREV
           </button>
@@ -96,23 +96,23 @@ export function StatsView() {
           <button
             type="button"
             onClick={nextMonth}
-            className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-lg font-bold text-xs xs:text-sm hover:opacity-90 shrink-0"
+            className="min-h-[44px] px-3 xs:px-4 py-2 bg-primary text-primary-foreground rounded-md font-bold text-xs xs:text-sm neo-border neo-shadow-sm neo-btn-press shrink-0"
           >
             NEXT →
           </button>
         </div>
 
-        <div className="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-lg p-4 xs:p-5 sm:p-6 border border-primary/30">
+        <div className="bg-primary neo-border neo-shadow-lg rounded-md p-4 xs:p-5 sm:p-6">
           <p className="text-xs xs:text-sm font-bold text-muted-foreground mb-1 xs:mb-2">MONTHLY TOTAL</p>
           <p className="text-2xl xs:text-3xl sm:text-4xl font-bold text-primary break-all">₱{monthlyTotal.toFixed(2)}</p>
         </div>
       </div>
 
-      <div className="bg-card rounded-lg p-4 xs:p-5 sm:p-6 border border-border">
+      <div className="neo-card p-4 xs:p-5 sm:p-6">
         <h3 className="text-base xs:text-lg font-bold text-primary mb-3 xs:mb-4">WEEKLY BREAKDOWN</h3>
         <div className="space-y-2 sm:space-y-3">
           {weeks.map((week, idx) => (
-            <div key={idx} className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-1 xs:gap-0 p-3 xs:p-4 bg-muted rounded-lg border border-border">
+            <div key={idx} className="flex flex-col xs:flex-row xs:items-center xs:justify-between gap-1 xs:gap-0 p-3 xs:p-4 bg-card neo-border neo-shadow-sm rounded-md">
               <div className="text-xs xs:text-sm font-bold text-foreground min-w-0">
                 Week {idx + 1}: {week.start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – {week.end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               </div>
@@ -123,7 +123,7 @@ export function StatsView() {
       </div>
 
       {categoryBreakdown.length > 0 && (
-        <div className="bg-card rounded-lg p-4 xs:p-5 sm:p-6 border border-border">
+        <div className="neo-card p-4 xs:p-5 sm:p-6">
           <h3 className="text-base xs:text-lg font-bold text-primary mb-3 xs:mb-4">SPENDING BY CATEGORY</h3>
           <div className="space-y-2 sm:space-y-3">
             {categoryBreakdown.map((category) => {
@@ -136,7 +136,7 @@ export function StatsView() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-1.5 xs:h-2 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all"
+                      className="h-full bg-secondary neo-border rounded-full transition-all"
                       style={{ width: `${percentage}%` }}
                     />
                   </div>

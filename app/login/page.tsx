@@ -72,7 +72,7 @@ export default function LoginPage() {
       <div className="absolute top-3 right-3 xs:top-4 xs:right-4">
         <ThemeSwitcher />
       </div>
-      <Card className="w-full max-w-md pixel-border border-2 xs:border-4 border-foreground/20 bg-card mx-2">
+      <Card className="w-full max-w-md neo-shadow-lg mx-2">
         <CardHeader className="text-center space-y-1 p-4 xs:p-6">
           <CardTitle className="text-base xs:text-lg sm:text-xl">EXPENSE TRACKER</CardTitle>
           <CardDescription className="text-[10px] xs:text-xs">
@@ -82,12 +82,12 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4 p-4 xs:p-6 pt-0">
             {error && (
-              <div className="rounded-md bg-destructive/10 text-destructive text-[10px] xs:text-xs p-2.5 xs:p-3 border border-destructive/20">
+              <div className="rounded-md bg-destructive text-destructive-foreground text-[10px] xs:text-xs p-2.5 xs:p-3 neo-border neo-shadow-sm">
                 {error}
               </div>
             )}
             {success && (
-              <div className="rounded-md bg-green-500/10 text-green-700 dark:text-green-400 text-[10px] xs:text-xs p-2.5 xs:p-3 border border-green-500/20">
+              <div className="rounded-md bg-accent text-accent-foreground text-[10px] xs:text-xs p-2.5 xs:p-3 neo-border neo-shadow-sm">
                 {success}
               </div>
             )}
@@ -125,7 +125,7 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col gap-3 p-4 xs:p-6 pt-0">
             <Button
               type="submit"
-              className="w-full pixel-border border-2 border-foreground/30 font-bold text-sm min-h-[44px]"
+              className="w-full font-bold text-sm min-h-[44px]"
               disabled={submitting}
             >
               {submitting ? '...' : isSignUp ? 'SIGN UP' : 'SIGN IN'}

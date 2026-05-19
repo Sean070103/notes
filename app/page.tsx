@@ -9,6 +9,7 @@ import { Header } from '@/components/header'
 import { DateSelector } from '@/components/date-selector'
 import { CalendarView } from '@/components/calendar-view'
 import { StatsView } from '@/components/stats-view'
+import { ProfileSection } from '@/components/profile-section'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 export default function Page() {
@@ -16,7 +17,7 @@ export default function Page() {
   const { user, loading } = useAuth()
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
   const [mounted, setMounted] = useState(false)
-  const [activeTab, setActiveTab] = useState<'daily' | 'calendar' | 'stats'>('daily')
+  const [activeTab, setActiveTab] = useState<'daily' | 'calendar' | 'stats' | 'profile'>('daily')
 
   useEffect(() => {
     setMounted(true)
@@ -40,16 +41,19 @@ export default function Page() {
       <div className="max-w-4xl mx-auto w-full min-w-0">
         <Header />
 
-        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'daily' | 'calendar' | 'stats')} className="mt-4 sm:mt-6 md:mt-8">
-          <TabsList className="w-full grid grid-cols-3 h-auto p-1 sm:w-auto sm:inline-flex sm:h-10">
-            <TabsTrigger value="daily" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'daily' | 'calendar' | 'stats' | 'profile')} className="mt-4 sm:mt-6 md:mt-8">
+          <TabsList className="w-full grid grid-cols-2 xs:grid-cols-4 h-auto p-1 gap-1 sm:w-auto sm:inline-flex sm:h-10 sm:gap-0">
+            <TabsTrigger value="daily" className="py-2.5 xs:py-3 text-[10px] xs:text-xs sm:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-3 md:px-4">
               DAILY
             </TabsTrigger>
-            <TabsTrigger value="calendar" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+            <TabsTrigger value="calendar" className="py-2.5 xs:py-3 text-[10px] xs:text-xs sm:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-3 md:px-4">
               CALENDAR
             </TabsTrigger>
-            <TabsTrigger value="stats" className="py-3 text-xs xs:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-4">
+            <TabsTrigger value="stats" className="py-2.5 xs:py-3 text-[10px] xs:text-xs sm:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-3 md:px-4">
               STATS
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="py-2.5 xs:py-3 text-[10px] xs:text-xs sm:text-sm font-bold rounded-md data-[state=active]:shadow-sm min-h-[44px] sm:min-h-0 sm:py-1.5 sm:px-3 md:px-4">
+              PROFILE
             </TabsTrigger>
           </TabsList>
           <TabsContent value="daily" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
@@ -63,6 +67,9 @@ export default function Page() {
           </TabsContent>
           <TabsContent value="stats" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
             <StatsView />
+          </TabsContent>
+          <TabsContent value="profile" className="mt-4 sm:mt-6 md:mt-8 focus-visible:outline-none">
+            <ProfileSection />
           </TabsContent>
         </Tabs>
       </div>
