@@ -53,7 +53,7 @@ export function OnboardingDialog({ open, onComplete, onCycleSetup }: OnboardingD
         {step === 0 && (
           <>
             <DialogHeader>
-              <DialogTitle className="text-center text-xl">✨ Welcome, babe!</DialogTitle>
+              <DialogTitle className="text-center text-xl">✨ Welcome, baby love love</DialogTitle>
               <DialogDescription className="text-center">
                 Let&apos;s set up your expense tracker in two quick steps.
               </DialogDescription>
