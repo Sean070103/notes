@@ -6,9 +6,14 @@ import { AuthProvider } from '@/lib/auth-context'
 import { ThemeProvider } from '@/components/theme-provider'
 
 export const metadata: Metadata = {
-  title: 'Expense Tracker - Retro Arcade',
-  description: 'Daily expense tracker with custom categories',
+  title: 'Expense & Cycle Tracker',
+  description: 'Track daily expenses, budgets, and your cycle beautifully',
   generator: 'v0.app',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Tracker',
+  },
 }
 
 export const viewport: Viewport = {

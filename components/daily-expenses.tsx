@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card'
 import { ExpenseItem } from './expense-item'
 import { useExpenses, type Expense } from '@/lib/expenses-context'
 import { formatDateKey } from '@/lib/utils'
+import { CardSkeleton } from '@/components/loading-skeleton'
 
 interface DailyExpensesProps {
   selectedDate: Date
@@ -23,6 +24,7 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
 
   const dateKey = formatDateKey(selectedDate)
   const dayExpenses = allExpenses[dateKey] || []
+  const isToday = formatDateKey(new Date()) === dateKey
 
   const handleAddExpense = async () => {
     if (!amount || isNaN(parseFloat(amount))) return
@@ -57,9 +59,8 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Card className="p-6">
-          <p className="text-sm font-bold text-muted-foreground">Loading expenses...</p>
-        </Card>
+        <CardSkeleton lines={4} />
+        <CardSkeleton lines={2} />
       </div>
     )
   }
@@ -154,15 +155,22 @@ export function DailyExpenses({ selectedDate }: DailyExpensesProps) {
       </Card>
 
       <div className="bg-secondary neo-border neo-shadow-lg rounded-md p-4 xs:p-5 sm:p-6">
-        <p className="text-xs xs:text-sm font-bold text-foreground mb-1 xs:mb-2 uppercase">Today&apos;s Total</p>
+        <p className="text-xs xs:text-sm font-bold text-foreground mb-1 xs:mb-2 uppercase">
+          {isToday ? "Today's total" : 'Day total'}
+        </p>
         <p className="text-2xl xs:text-3xl sm:text-4xl font-bold text-foreground">₱{totalExpenses.toFixed(2)}</p>
       </div>
 
       <div className="space-y-2 sm:space-y-3">
         {dayExpenses.length === 0 ? (
           <div className="bg-muted neo-border neo-shadow-sm rounded-md p-6 xs:p-8 text-center">
+            <p className="text-2xl mb-2">💸</p>
             <p className="text-xs xs:text-sm font-bold text-muted-foreground">No expenses yet</p>
-            <p className="text-[10px] xs:text-xs text-muted-foreground mt-2">Start tracking your spending!</p>
+            <p className="text-[10px] xs:text-xs text-muted-foreground mt-2">
+              {isToday
+                ? 'Start tracking your spending today!'
+                : `Nothing logged for ${selectedDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — add one above.`}
+            </p>
           </div>
         ) : (
           dayExpenses.map((expense: Expense) => (

@@ -4,48 +4,63 @@ export type CyclePhase = {
   id: CyclePhaseId
   name: string
   shortLabel: string
+  emoji: string
+  vibe: string
   description: string
   tips: string
   colorClass: string
   borderClass: string
+  ringClass: string
 }
 
 export const CYCLE_PHASES: CyclePhase[] = [
   {
     id: 'menstrual',
     name: 'Menstrual',
-    shortLabel: 'Period',
-    description: 'Your period. The uterine lining sheds and a new cycle begins.',
-    tips: 'Rest, hydrate, and track flow. Light movement can help cramps.',
-    colorClass: 'bg-destructive/15 text-destructive',
-    borderClass: 'border-destructive/40',
+    shortLabel: 'Cozy rest',
+    emoji: '🩷',
+    vibe: 'Rest & recharge',
+    description: 'Your sweet reset week — let your body unwind and start fresh.',
+    tips: 'Wrap up in something cozy, sip warm tea, and be extra gentle with yourself. You deserve it!',
+    colorClass: 'bg-rose-100 text-rose-700',
+    borderClass: 'border-rose-300',
+    ringClass: 'bg-rose-400',
   },
   {
     id: 'follicular',
     name: 'Follicular',
-    shortLabel: 'Follicular',
-    description: 'Estrogen rises. Follicles in the ovaries mature and energy often increases.',
-    tips: 'Good time for new habits, workouts, and planning.',
-    colorClass: 'bg-secondary/20 text-secondary',
-    borderClass: 'border-secondary/40',
+    shortLabel: 'Fresh start',
+    emoji: '🌸',
+    vibe: 'Blooming energy',
+    description: 'Estrogen is rising and your energy is waking up — like spring after winter.',
+    tips: 'Perfect time for new habits, cute workouts, and dreaming up your next adventure!',
+    colorClass: 'bg-pink-50 text-pink-600',
+    borderClass: 'border-pink-200',
+    ringClass: 'bg-pink-400',
   },
   {
     id: 'ovulation',
     name: 'Ovulation',
-    shortLabel: 'Ovulation',
-    description: 'An egg is released. This is your most fertile window of the cycle.',
-    tips: 'Fertility is highest. You may notice clearer cervical mucus or mild ovulation pain.',
-    colorClass: 'bg-primary/20 text-primary',
-    borderClass: 'border-primary/40',
+    shortLabel: 'Glow time',
+    emoji: '✨',
+    vibe: 'Main character era',
+    description: 'Your most radiant window — confidence and glow are at their peak.',
+    tips: 'You might feel extra social and magnetic. Listen to your body and shine!',
+    colorClass: 'bg-fuchsia-100 text-fuchsia-700',
+    borderClass: 'border-fuchsia-300',
+    ringClass: 'bg-fuchsia-400',
   },
   {
     id: 'luteal',
     name: 'Luteal',
-    shortLabel: 'Luteal',
-    description: 'Progesterone rises after ovulation. The body prepares for a possible pregnancy.',
-    tips: 'PMS may appear later in this phase. Prioritize sleep and balanced meals.',
-    colorClass: 'bg-accent/25 text-accent-foreground',
-    borderClass: 'border-accent/50',
+    shortLabel: 'Wind down',
+    emoji: '🌙',
+    vibe: 'Soft & snuggly',
+    description: 'Your body is nesting — cozy vibes, comfort food, and early bedtimes feel so right.',
+    tips: 'Cravings and mood swings are totally normal. Prioritize sleep, snacks, and self-love.',
+    colorClass: 'bg-violet-100 text-violet-700',
+    borderClass: 'border-violet-300',
+    ringClass: 'bg-violet-400',
   },
 ]
 
@@ -142,4 +157,31 @@ export function getPhaseStatus(settings: CycleSettings, onDate: Date = new Date(
     phaseDayRange: `Days ${phaseStart}–${phaseEnd}`,
     daysUntilNextPeriod,
   }
+}
+
+/** Next predicted period start on or after fromDate */
+export function getNextPeriodDate(
+  settings: CycleSettings,
+  fromDate: Date = new Date()
+): Date | null {
+  if (!settings.lastPeriodStart) return null
+  const start = parseLocal(settings.lastPeriodStart)
+  const from = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate())
+  let next = new Date(start)
+  while (next <= from) {
+    next = new Date(
+      next.getFullYear(),
+      next.getMonth(),
+      next.getDate() + settings.cycleLength
+    )
+  }
+  return next
+}
+
+export function formatPeriodDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'long',
+    day: 'numeric',
+  })
 }
