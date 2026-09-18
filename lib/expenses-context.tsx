@@ -38,6 +38,8 @@ type ExpensesContextType = {
   addExpense: (dateKey: string, expense: Omit<Expense, 'id'>) => Promise<void>
   deleteExpense: (dateKey: string, id: string) => Promise<void>
   addCategory: (category: string) => Promise<void>
+  editCategory: (oldCategory: string, newCategory: string) => Promise<void>
+  deleteCategory: (category: string) => Promise<void>
   setMonthlyBudget: (amount: number | null) => Promise<void>
   addRecurringExpense: (item: Omit<RecurringExpense, 'id'>) => Promise<void>
   deleteRecurringExpense: (id: string) => Promise<void>
@@ -316,6 +318,59 @@ export function ExpensesProvider({ children }: { children: React.ReactNode }) {
     [supabase, user, categories]
   )
 
+  const editCategory = useCallback(
+    async (oldCategory: string, newCategory: string) => {
+      const trimmed = newCategory.trim()
+      if (!trimmed || trimmed === oldCategory || categories.includes(trimmed)) return
+      if (DEFAULT_CATEGORIES.includes(oldCategory)) return // don't rename defaults
+      if (supabase && user) {
+        const { error } = await supabase
+          .from('user_categories')
+          .update({ category: trimmed })
+          .eq('user_id', user.id)
+          .eq('category', oldCategory)
+        if (error) {
+          console.error('Failed to edit category:', error)
+          return
+        }
+        // Also rename the category on existing expenses
+        await supabase
+          .from('expenses')
+          .update({ category: trimmed })
+          .eq('user_id', user.id)
+          .eq('category', oldCategory)
+      }
+      setCategories((prev) => prev.map((c) => (c === oldCategory ? trimmed : c)))
+      setAllExpenses((prev) => {
+        const next: StorageExpenses = {}
+        for (const [dateKey, list] of Object.entries(prev)) {
+          next[dateKey] = list.map((e) => (e.category === oldCategory ? { ...e, category: trimmed } : e))
+        }
+        return next
+      })
+    },
+    [supabase, user, categories]
+  )
+
+  const deleteCategory = useCallback(
+    async (category: string) => {
+      if (DEFAULT_CATEGORIES.includes(category)) return // protect defaults
+      if (supabase && user) {
+        const { error } = await supabase
+          .from('user_categories')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('category', category)
+        if (error) {
+          console.error('Failed to delete category:', error)
+          return
+        }
+      }
+      setCategories((prev) => prev.filter((c) => c !== category))
+    },
+    [supabase, user]
+  )
+
   const setMonthlyBudget = useCallback(
     async (amount: number | null) => {
       setMonthlyBudgetState(amount)
@@ -413,6 +468,8 @@ export function ExpensesProvider({ children }: { children: React.ReactNode }) {
       addExpense,
       deleteExpense,
       addCategory,
+      editCategory,
+      deleteCategory,
       setMonthlyBudget,
       addRecurringExpense,
       deleteRecurringExpense,
@@ -427,6 +484,8 @@ export function ExpensesProvider({ children }: { children: React.ReactNode }) {
       addExpense,
       deleteExpense,
       addCategory,
+      editCategory,
+      deleteCategory,
       setMonthlyBudget,
       addRecurringExpense,
       deleteRecurringExpense,
